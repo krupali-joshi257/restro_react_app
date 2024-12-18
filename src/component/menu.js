@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 
 const Menu = () => {
-  //   console.log(addToCart, "====addToCart");
   const [menuItems, setMenuItems] = useState([]);
   const [cart, setCart] = useState([]);
 
@@ -22,6 +21,7 @@ const Menu = () => {
   };
   const addToCart = (item) => {
     setCart((prevCart) => [...prevCart, item]);
+    localStorage.setItem("cart", JSON.stringify(cart));
   };
 
   return (

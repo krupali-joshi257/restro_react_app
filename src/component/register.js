@@ -17,6 +17,7 @@ const Register = () => {
       // Create user
       await axios.post(API_URL, formData).then((res) => {
         console.log(res);
+        // lsocalStorage.setItem("user", JSON.stringify(res.data));
         setFormData({ name: "", email: "", password: "" });
       });
     } catch (error) {

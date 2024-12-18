@@ -6,7 +6,7 @@ const OrderHistory = ({ isAuthenticated }) => {
 
   console.log(isAuthenticated);
   useEffect(() => {
-    axios.get("http://localhost:5000/orders").then((response) => {
+    axios.get("http://localhost:4000/api/order/orders").then((response) => {
       console.log(response, "-----");
       setOrders(response.data);
     });

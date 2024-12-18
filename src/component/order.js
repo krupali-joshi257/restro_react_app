@@ -1,35 +1,23 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 
 const Cart = ({ isAuthenticated }) => {
   const [cart, setCart] = useState([]);
   const [message, setMessage] = useState("");
 
-  // const totalPrice = cart.reduce((sum, item) => sum + item.price, 0);
-
-  //   const placeOrder = async () => {
-  //     try {
-  //       const response = await axios.post("/api/orders", { items: cart });
-  //       alert("Order placed successfully!");
-  //       setCart([]);
-  //     } catch (error) {
-  //       alert("Failed to place order.");
-  //     }
-  //   };
-  const handleCheckout = async () => {
-    if (!isAuthenticated) {
-      setMessage("Please log in to place an order.");
-      return;
+  useEffect(() => {
+    const storedCart = localStorage.getItem("cart");
+    console.log(storedCart);
+    if (storedCart) {
+      setCart(JSON.parse(storedCart)); // Set the cart state from localStorage
     }
+  }, []);
 
+  const handleCheckout = async () => {
     try {
-      await axios.post(
-        "http://localhost:5000/order",
-        { items: cart },
-        {
-          headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
-        }
-      );
+      await axios.post("http://localhost:4000/api/order/order", {
+        items: cart,
+      });
       setMessage("Order placed successfully!");
       setCart([]);
     } catch (error) {
@@ -44,14 +32,14 @@ const Cart = ({ isAuthenticated }) => {
       ) : (
         cart.map((item, index) => (
           <div key={index}>
-            {item.name} - ${item.price.toFixed(2)}
+            {item.name} - ${item.price}
+            {/* - ${item.price.toFixed(2)} */}
           </div>
         ))
       )}
       <button onClick={handleCheckout}>Checkout</button>
       {message && <p>{message}</p>}
       {/* <h3>Total: ${totalPrice}</h3> */}
-      {/* <button onClick={placeOrder}>Place Order</button> */}
     </div>
   );
 };
