@@ -15,27 +15,28 @@ const OrderHistory = ({ isAuthenticated }) => {
   return (
     <div>
       <h2>Order History</h2>
-      {/* {orders.map((order) => (
-        <div key={order.id}>
-          <h3>Order #{order.id}</h3>
-          <p>Total Price: ${order.total_price}</p>
-          <p>Date: {new Date(order.order_date).toLocaleDateString()}</p>
-        </div>
-      ))} */}
-      {orders.map((order) => (
-        <div key={order.id}>
-          <h3>Order #{order.id}</h3>
-          <p>Date: {new Date(order.order_date).toLocaleString()}</p>
-          <p>Status: {order.status}</p>
-          {/* <ul>
-            {order.items.map((item, index) => (
-              <li key={index}>
-                {item.name} - ${item.price.toFixed(2)}
-              </li>
-            ))}
-          </ul> */}
-        </div>
-      ))}
+      {orders.map((order) => {
+        // Parse `order.items` if it is a string
+        const items =
+          typeof order.items === "string"
+            ? JSON.parse(order.items)
+            : order.items;
+
+        return (
+          <div key={order.id}>
+            <h3>Order #{order.id}</h3>
+            <p>Date: {new Date(order.order_date).toLocaleString()}</p>
+            <p>Status: {order.status}</p>
+            <ul>
+              {items.map((item, index) => (
+                <li key={index}>
+                  {item.name} - ${item.price}
+                </li>
+              ))}
+            </ul>
+          </div>
+        );
+      })}
     </div>
   );
 };

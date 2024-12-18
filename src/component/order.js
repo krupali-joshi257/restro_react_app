@@ -14,10 +14,19 @@ const Cart = ({ isAuthenticated }) => {
   }, []);
 
   const handleCheckout = async () => {
+    console.log(cart, "====cart");
     try {
-      await axios.post("http://localhost:4000/api/order/order", {
-        items: cart,
-      });
+      await axios
+        .post("http://localhost:4000/api/order/order", {
+          user_id: 1,
+          items: JSON.stringify(cart),
+        })
+        .then((res) => {
+          console.log("res", res);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
       setMessage("Order placed successfully!");
       setCart([]);
     } catch (error) {
